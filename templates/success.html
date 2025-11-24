@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPass Created Successfully</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 50px 40px;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .success-icon::after {
+            content: "✓";
+            color: white;
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .success-message {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .user-name {
+            color: #333;
+            font-weight: 700;
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 10px;
+            display: inline-block;
+            min-width: 200px;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .info-section h3 {
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-section p {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 12px;
+        }
+
+        .info-section li {
+            color: #555;
+            font-size: 0.9em;
+            padding: 8px 0 8px 28px;
+            position: relative;
+        }
+
+        .info-section li::before {
+            content: "🔹";
+            position: absolute;
+            left: 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.15em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button::before {
+            content: "⬇ ";
+            margin-right: 8px;
+        }
+
+        .security-note {
+            margin-top: 25px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .security-note p {
+            color: #856404;
+            font-size: 0.85em;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 30px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .success-icon {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon"></div>
+        
+        <h1>Credential Creation Successful!</h1>
+        
+        <p class="success-message">Your Verifiable Passkey has been successfully created for:</p>
+        
+        <div class="user-name">{{user}}</div>
+        
+        <div class="info-section">
+            <h3>📋 Your VPass Contains:</h3>
+            <ul>
+                <li>Cryptographically signed identity credentials</li>
+                <li>Tamper-proof verification data</li>
+                <li>Secure authentication tokens</li>
+                <li>Public key for identity verification</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h3>🔐 Next Steps:</h3>
+            <p>Download your Verifiable Passkey now to complete the setup. Store this file securely - it contains your encrypted identity credentials and will be required for authentication.</p>
+        </div>
+        
+        <button onclick='window.location.href="/download";'>Download Verifiable Passkey</button>
+        
+        <div class="security-note">
+            <p><strong>ℹ️ Security Information:</strong> Your VPass contains only your public key and can be safely shared. The file itself does not grant access to your credentials - authentication with your private key is always required for verification.</p>
+        </div>
+    </div>
+</body>
+</html>

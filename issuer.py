@@ -52,7 +52,7 @@ public_key_jwk = {
 }
 
 # Issuer DID
-ISSUER_DID = "did:web:https://AdityaMitra5102.github.io/VPass-Issuer"
+ISSUER_DID = "did:web:AdityaMitra5102.github.io/VPass-Issuer"
 
 # Serve DID Document at /.well-known/did.json
 @app.route('/.well-known/did.json', methods=['GET'])
@@ -195,4 +195,5 @@ def download():
 if __name__ == '__main__':
 	app.run(debug=True, port=5000)
     
+
     

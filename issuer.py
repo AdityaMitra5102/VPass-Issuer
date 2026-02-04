@@ -138,7 +138,7 @@ def register_complete():
 	userinfo=session['user']
 	clientDataJson=base64.urlsafe_b64decode(request.args.get('clientDataJSON'))
 	attestationObject=base64.urlsafe_b64decode(request.args.get('attestationObject'))
-	authenticatorId=base64.urlsafe_b64decode(request.args.get('authenticatorId'))
+	authenticatorId=base64.urlsafe_b64decode(request.args.get('credentialId'))
 
 	print(clientDataJson)
 	if not check_domain(json.loads(clientDataJson.decode())['origin'], pagex):
@@ -204,4 +204,5 @@ def download():
 if __name__ == '__main__':
 	app.run(debug=True, port=5000)
     
+
     

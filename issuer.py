@@ -1,4 +1,4 @@
-pagex='https://pagex.mukham.in/'
+pagex='https://pagex.mukham.in/pagex'
 myurl='http://localhost:5000'
 
 from jose import jws
@@ -14,6 +14,7 @@ from fido2.server import *
 from fido2.webauthn import *
 import base64
 from urllib.parse import urlparse
+import hashlib
 
 app=Flask(__name__)
 
@@ -105,6 +106,13 @@ def check_domain(respurl, pagex):
 	return domain1==domain2 or domain1.endswith('.'+domain2)
 
 
+def get_hostname_hash(url):
+	hostname=urlparse(url).hostname
+	hostnamehash=hashlib.sha256(hostname.encode()).digest()
+	return hostnamehash
+	
+
+
 @app.route('/')
 def index():
 	return render_template('index.html')
@@ -114,7 +122,9 @@ def register_begin():
 	userinfo=dict(request.form)
 	rp = PublicKeyCredentialRpEntity(name="PageX", id=pagex_domain)
 	server = Fido2Server(rp)
-	
+	hostname=get_hostname_hash(myurl)
+	challenge=hostname+os.urandom(16)
+
 	user=userinfo['name']
 	options, state = server.register_begin(
 		PublicKeyCredentialUserEntity(
@@ -122,6 +132,7 @@ def register_begin():
 			name=user,
 			display_name=user,
 		),
+		challenge=challenge
 	)
 	
 	print(options.public_key.challenge)
@@ -140,16 +151,18 @@ def register_complete():
 	attestationObject=base64.urlsafe_b64decode(request.args.get('attestationObject'))
 	authenticatorId=base64.urlsafe_b64decode(request.args.get('credentialId'))
 
-	print(clientDataJson)
 	if not check_domain(json.loads(clientDataJson.decode())['origin'], pagex):
 		raise ValueError(f'Request not signed using Pagex at f{pagex}')
 
 	rawId=authenticatorId
 	
 	respjsonxx={'clientDataJSON': clientDataJson, 'attestationObject': attestationObject}
-	print(respjsonxx)
 	
 	resp=AuthenticatorAttestationResponse.from_dict(respjsonxx)
+	currchallenge=resp.client_data.challenge
+	if currchallenge[:32] != get_hostname_hash(myurl):
+		raise ValueError("Probable MITM")
+
 	
 	cred={'rawId': rawId, 'response': resp}
 	
@@ -158,7 +171,6 @@ def register_complete():
 	server = Fido2Server(rp)
 
 	auth_data=server.register_complete(state, cred)
-	print(auth_data)
 	cred=auth_data.credential_data
     
 	cred_dict={'aaguid': cred.aaguid, 'credential_id': cred.credential_id, 'public_key': cred.public_key}

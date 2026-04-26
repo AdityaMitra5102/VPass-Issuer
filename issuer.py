@@ -214,6 +214,7 @@ def download():
 	return send_file(io.BytesIO(json.dumps(vpass).encode()), mimetype='application/json', as_attachment=True, download_name='vpass.json')
 
 if __name__ == '__main__':
+	print("Visit http://localhost:5000/")	
 	app.run(debug=True, port=5000)
     
 
